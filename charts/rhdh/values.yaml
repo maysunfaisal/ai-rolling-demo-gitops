@@ -315,7 +315,7 @@ global:
       - package: ./dynamic-plugins/dist/backstage-plugin-scaffolder-backend-module-github-dynamic
         disabled: false
 
-  clusterRouterBase: apps.rosa.redhat-ai-dev.m6no.p3.openshiftapps.com
+  clusterRouterBase: apps.mfaisal-feb192026.devcluster.openshift.com
   host: ""
   auth:
     backend:

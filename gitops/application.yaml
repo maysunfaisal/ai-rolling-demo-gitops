@@ -7,8 +7,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/redhat-ai-dev/ai-rolling-demo-gitops.git
-    targetRevision: HEAD
+    repoURL: https://github.com/maysunfaisal/ai-rolling-demo-gitops.git
+    targetRevision: update-lls-lcore-rag-1-test
     path: ./charts/rhdh
     helm:
       valueFiles:
