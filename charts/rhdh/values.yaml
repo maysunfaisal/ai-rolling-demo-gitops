@@ -312,7 +312,7 @@ global:
   lightspeed:
     enabled: true
     plugins:
-      - package: oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/red-hat-developer-hub-backstage-plugin-lightspeed:bs_1.49.4__2.6.0
+      - package: oci://quay.io/maysunfaisal/rhdh-plugin-lightspeed:dcr-0.1.0!red-hat-developer-hub-backstage-plugin-lightspeed
         disabled: false
         pluginConfig:
           dynamicPlugins:
@@ -339,7 +339,7 @@ global:
                     config:
                       id: lightspeed
                       priority: 100
-      - package: oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/red-hat-developer-hub-backstage-plugin-lightspeed-backend:bs_1.49.4__2.6.0
+      - package: oci://quay.io/maysunfaisal/rhdh-plugin-lightspeed-backend:dcr-0.1.0!red-hat-developer-hub-backstage-plugin-lightspeed-backend
         disabled: false
     secret:
       create: false
@@ -396,6 +396,10 @@ backstage:
               licensedUsers: 50
         auth:
           environment: production
+          experimentalDynamicClientRegistration:
+            enabled: true
+            allowedRedirectUriPatterns:
+              - '*'
           session:
             secret: "${BACKEND_SECRET}"
           providers:
@@ -536,9 +540,17 @@ backstage:
               provider_id: ${NOTEBOOKS_QUERY_PROVIDER_ID}
           mcpServers:
             - name: mcp-integration-tools
-              token: ${MCP_TOKEN}
+              auth: dcr
         mcpActions:
           namespacedToolNames: false
+        permission:
+          enabled: true
+          rbac:
+            admin:
+              superUsers:
+                - name: user:default/admin
+            policies-csv-file: /opt/app-root/src/rbac-policy.csv
+            policyFileReload: true
         integrations:
           github:
             - apps:
@@ -650,6 +662,9 @@ backstage:
           mountPath: /tmp
         - name: extensions-catalog
           mountPath: /extensions
+        - name: rbac-policy
+          mountPath: /opt/app-root/src/rbac-policy.csv
+          subPath: rbac-policy.csv
       extraVolumes:
         - name: dynamic-plugins-root
           ephemeral:
@@ -675,6 +690,9 @@ backstage:
           emptyDir: {}
         - name: extensions-catalog
           emptyDir: {}
+        - name: rbac-policy
+          configMap:
+            name: rbac-policy
       initContainers:
         - name: install-dynamic-plugins
           image: '{{ include "backstage.image" . }}'
