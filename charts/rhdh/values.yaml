@@ -10,7 +10,7 @@ global:
         disabled: true
 
       ##### OAuth2 consent page plugin (required for DCR) #####
-      - package: oci://quay.io/maysunfaisal/backstage-plugin-auth:dcr-0.1.0!backstage-plugin-auth
+      - package: oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/backstage-plugin-auth:bs_1.49.4__0.1.6
         disabled: false
         pluginConfig:
           dynamicPlugins:
@@ -357,7 +357,7 @@ global:
                     config:
                       id: lightspeed
                       priority: 100
-      - package: oci://quay.io/maysunfaisal/rhdh-plugin-lightspeed-backend:dcr-0.1.1!red-hat-developer-hub-backstage-plugin-lightspeed-backend
+      - package: oci://quay.io/maysunfaisal/rhdh-plugin-lightspeed-backend:dcr-0.1.2!red-hat-developer-hub-backstage-plugin-lightspeed-backend
         disabled: false
     secret:
       create: false
