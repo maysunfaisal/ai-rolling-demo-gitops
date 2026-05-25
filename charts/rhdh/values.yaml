@@ -552,10 +552,7 @@ backstage:
                     - resolver: emailMatchingUserEntityProfileEmail
         lightspeed:
           notebooks:
-            enabled: true
-            queryDefaults:
-              model: ${NOTEBOOKS_QUERY_MODEL}
-              provider_id: ${NOTEBOOKS_QUERY_PROVIDER_ID}
+            enabled: false
           mcpServers:
             - name: mcp-integration-tools
               auth: dcr
