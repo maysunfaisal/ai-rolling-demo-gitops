@@ -9,6 +9,10 @@ global:
       - package: oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/red-hat-developer-hub-backstage-plugin-lightspeed-backend:bs_1.49.4__2.6.3
         disabled: true
 
+      ##### Disable quickstart plugin (crashes OAuth2 page with missing provider context) #####
+      - package: ./dynamic-plugins/dist/red-hat-developer-hub-backstage-plugin-quickstart
+        disabled: true
+
       ##### OAuth2 consent page plugin (required for DCR) #####
       - package: oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/backstage-plugin-auth:bs_1.49.4__0.1.6
         disabled: false
