@@ -1,0 +1,47 @@
+{{- if not .Values.global.ci }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: okp
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: okp
+  template:
+    metadata:
+      labels:
+        app: okp
+    spec:
+      containers:
+      - name: okp
+        image: registry.redhat.io/offline-knowledge-portal/rhokp-rhel9:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/bash", "/usr/local/bin/run-solr"]
+        ports:
+        - containerPort: 8983
+          name: solr
+          protocol: TCP
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "2Gi"
+          limits:
+            cpu: "2"
+            memory: "4Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: okp-svc
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+  - port: 8983
+    targetPort: 8983
+    name: solr
+  selector:
+    app: okp
+  type: ClusterIP
+{{- end }}

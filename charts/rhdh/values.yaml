@@ -382,7 +382,7 @@ global:
     configMaps:
       - name: stack
         create: false
-        nameOverride: "lightspeed-stack-config"
+        nameOverride: "lightspeed-stack-okp"
         mountPath: /app-root/lightspeed-stack.yaml
         subPath: lightspeed-stack.yaml
         sourceFile: lightspeed-stack.yaml
