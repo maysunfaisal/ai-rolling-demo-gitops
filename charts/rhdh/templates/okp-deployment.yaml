@@ -19,6 +19,9 @@ spec:
         image: registry.redhat.io/offline-knowledge-portal/rhokp-rhel9:latest
         imagePullPolicy: IfNotPresent
         command: ["/bin/bash", "/usr/local/bin/run-solr"]
+        env:
+        - name: SOLR_HOST_BIND
+          value: "0.0.0.0"
         ports:
         - containerPort: 8983
           name: solr
