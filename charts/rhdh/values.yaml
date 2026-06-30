@@ -329,7 +329,7 @@ global:
   lightspeed:
     enabled: true
     plugins:
-      - package: oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/red-hat-developer-hub-backstage-plugin-lightspeed:bs_1.49.4__2.9.0
+      - package: oci://quay.io/maysunfaisal/rhdh-plugin-lightspeed:okp-poc-2!red-hat-developer-hub-backstage-plugin-lightspeed
         disabled: false
         pluginConfig:
           dynamicPlugins:
@@ -340,7 +340,7 @@ global:
                     module: Alpha
                     ref: lightspeedTranslationRef
                 dynamicRoutes:
-                  - path: /lightspeed
+                  - path: /intelligent-assistant
                     importName: LightspeedPage
                 mountPoints:
                   - mountPoint: application/listener
@@ -356,7 +356,7 @@ global:
                     config:
                       id: lightspeed
                       priority: 100
-      - package: oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/red-hat-developer-hub-backstage-plugin-lightspeed-backend:bs_1.49.4__2.9.0
+      - package: oci://quay.io/maysunfaisal/rhdh-plugin-lightspeed-backend:okp-poc-2!red-hat-developer-hub-backstage-plugin-lightspeed-backend
         disabled: false
     secret:
       create: false
@@ -555,7 +555,7 @@ backstage:
                 signIn:
                   resolvers:
                     - resolver: emailMatchingUserEntityProfileEmail
-        lightspeed:
+        intelligent-assistant:
           notebooks:
             enabled: true
             queryDefaults:
