@@ -36,6 +36,8 @@ data:
     rag:
       inline:
         - okp
+      tool:
+        - vs_757285d9-b657-4bed-b18c-3359844e8c0d
     okp:
       rhokp_url: http://okp-svc.{{ .Release.Namespace }}.svc.cluster.local:8983
       offline: true
