@@ -47,4 +47,19 @@ spec:
   selector:
     app: okp
   type: ClusterIP
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: okp
+  namespace: {{ .Release.Namespace }}
+spec:
+  to:
+    kind: Service
+    name: okp-svc
+  port:
+    targetPort: solr
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
 {{- end }}
