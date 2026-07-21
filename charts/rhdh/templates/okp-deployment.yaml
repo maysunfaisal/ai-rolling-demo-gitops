@@ -61,5 +61,5 @@ spec:
     targetPort: solr
   tls:
     termination: edge
-    insecureEdgeTerminationPolicy: Redirect
+    insecureEdgeTerminationPolicy: Allow
 {{- end }}

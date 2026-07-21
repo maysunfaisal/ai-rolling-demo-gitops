@@ -39,6 +39,6 @@ data:
       tool:
         - vs_757285d9-b657-4bed-b18c-3359844e8c0d
     okp:
-      rhokp_url: https://okp-{{ .Release.Namespace }}.{{ .Values.global.clusterRouterBase }}
+      rhokp_url: http://okp-{{ .Release.Namespace }}.{{ .Values.global.clusterRouterBase }}
       offline: true
       chunk_filter_query: "product:*developer_hub*"
