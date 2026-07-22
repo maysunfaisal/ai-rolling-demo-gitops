@@ -18,11 +18,24 @@ spec:
       - name: okp
         image: registry.redhat.io/offline-knowledge-portal/rhokp-rhel9:latest
         imagePullPolicy: IfNotPresent
-        command: ["/bin/bash", "/usr/local/bin/run-solr"]
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            /opt/solr/bin/solr start --user-managed --force -m 1g
+            exec httpd -D FOREGROUND
         env:
         - name: SOLR_HOST_BIND
           value: "0.0.0.0"
+        - name: MIMIR_HTTPD_SERVER_NAME
+          value: "localhost"
+        - name: COMPRESSED
+          value: "false"
+        - name: ENCRYPT
+          value: "false"
         ports:
+        - containerPort: 8080
+          name: httpd
+          protocol: TCP
         - containerPort: 8983
           name: solr
           protocol: TCP
@@ -41,6 +54,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
+  - port: 8080
+    targetPort: 8080
+    name: httpd
   - port: 8983
     targetPort: 8983
     name: solr
@@ -58,7 +74,7 @@ spec:
     kind: Service
     name: okp-svc
   port:
-    targetPort: solr
+    targetPort: httpd
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Allow
