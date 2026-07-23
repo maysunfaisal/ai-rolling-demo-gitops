@@ -22,6 +22,7 @@ spec:
         args:
           - |
             /opt/solr/bin/solr start --user-managed --force -m 1g
+            rm -f /etc/httpd/conf.d/ssl.conf
             exec httpd -D FOREGROUND
         env:
         - name: SOLR_HOST_BIND
