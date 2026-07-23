@@ -30,7 +30,7 @@ spec:
         - name: MIMIR_HTTPD_SERVER_NAME
           value: "localhost"
         - name: COMPRESSED
-          value: "false"
+          value: "true"
         - name: ENCRYPT
           value: "false"
         ports:
