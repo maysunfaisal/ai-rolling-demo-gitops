@@ -804,3 +804,5 @@ backstage:
       insecureEdgeTerminationPolicy: "Redirect"
 rhoai:
   enabled: true
+okp:
+  enabled: true

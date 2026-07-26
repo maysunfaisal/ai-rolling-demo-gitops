@@ -1,0 +1,32 @@
+image:
+  repository: registry.redhat.io/offline-knowledge-portal/rhokp-rhel9
+  tag: latest
+  pullPolicy: IfNotPresent
+
+replicas: 1
+
+solr:
+  memory: 1g
+  hostBind: "0.0.0.0"
+
+httpd:
+  serverName: localhost
+  compressed: "true"
+  encrypt: "false"
+
+resources:
+  requests:
+    cpu: "200m"
+    memory: "2Gi"
+  limits:
+    cpu: "2"
+    memory: "4Gi"
+
+service:
+  type: ClusterIP
+
+route:
+  enabled: true
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Allow
