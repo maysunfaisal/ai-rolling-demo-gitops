@@ -10,4 +10,5 @@ dependencies:
     version: "7.0.1"
   - name: okp
     version: "0.1.0"
+    repository: https://redhat-ai-dev.github.io/okp-chart
     condition: okp.enabled
