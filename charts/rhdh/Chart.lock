@@ -2,5 +2,8 @@ dependencies:
 - name: backstage
   repository: https://redhat-developer.github.io/rhdh-chart/
   version: 6.1.1
-digest: sha256:75e5113a2b85cce71b550f498708b3e10d1622ef669ee878a8c63729b89b7489
-generated: "2026-06-17T10:13:42.012509013+01:00"
+- name: okp
+  repository: https://redhat-ai-dev.github.io/okp-chart
+  version: 0.1.0
+digest: sha256:2931c274c5b44b892eda63f0c0f6d36388fd510e2f1fe6cb8af6154ab3e39708
+generated: "2026-07-27T17:28:49.872722-04:00"
