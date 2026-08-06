@@ -15,7 +15,37 @@ data:
       access_log: true
     llama_stack:
       use_as_library_client: true
-      library_client_config_path: /app-root/config.yaml
+      config:
+        native_override:
+          external_providers_dir: '/app-root/providers.d'
+          storage:
+            backends:
+              kv_default:
+                type: kv_sqlite
+                db_path: /tmp/kvstore.db
+              sql_default:
+                type: sql_sqlite
+                db_path: /tmp/sql_store.db
+          providers:
+            files:
+              - provider_id: meta-reference-files
+                provider_type: inline::localfs
+                config:
+                  storage_dir: /tmp/llama-stack-files
+                  metadata_store:
+                    table_name: files_metadata
+                    backend: sql_default
+    inference:
+      providers:
+        - type: openai
+          id: openai
+          api_key_env: OPENAI_API_KEY
+          extra:
+            allowed_models:
+              - gpt-4o-mini
+              - gpt-4.1-mini
+              - gpt-4.1-nano
+        - type: sentence_transformers
     user_data_collection:
       feedback_enabled: true
       feedback_storage: '/tmp/data/feedback'
@@ -33,11 +63,22 @@ data:
         url: 'http://localhost:7007/api/mcp-actions/v1'
         authorization_headers:
           Authorization: 'client'
+    vector_store:
+      default_provider: notebooks
+      providers:
+        - id: notebooks
+          type: pgvector
+          embedding_model: nomic-ai/nomic-embed-text-v1.5
+          embedding_dimension: 768
+          config:
+            host: ${env.PGVECTOR_HOST:=lightspeed-postgres-svc.lightspeed-postgres.svc.cluster.local}
+            port: "5432"
+            db: ${env.PGVECTOR_DB}
+            user: ${env.PGVECTOR_USER}
+            password: ${env.PGVECTOR_PASSWORD}
     rag:
-      inline:
-        - okp
       tool:
-        - vs_757285d9-b657-4bed-b18c-3359844e8c0d
+        - okp
     okp:
       rhokp_url: http://{{ .Release.Name }}-okp-{{ .Release.Namespace }}.{{ .Values.global.clusterRouterBase }}
       offline: true
