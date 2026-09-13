@@ -10,7 +10,9 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 DOCS_DIR="${1:-$SCRIPT_DIR/docs}"
-OUTPUT_DIR="$SCRIPT_DIR/vector_db/custom_docs"
+STORE_NAME="${STORE_NAME:-custom_docs}"
+RAG_ID="${RAG_ID:-custom-org-docs}"
+OUTPUT_DIR="$SCRIPT_DIR/vector_db/$STORE_NAME"
 EMBEDDINGS_DIR="$SCRIPT_DIR/embeddings_model"
 MODEL_NAME="sentence-transformers/all-mpnet-base-v2"
 CHUNK_SIZE=512
@@ -31,6 +33,8 @@ if [ -z "$RAG_CONTENT_REPO" ]; then
   echo "  RAG_CONTENT_REPO   (required) Path to local rag-content clone"
   echo "  BYOK_IMAGE         (optional) Container image tag — if set, builds and pushes the image"
   echo "  CONTAINER_ENGINE   (optional) podman or docker (default: podman)"
+  echo "  STORE_NAME         (optional) Output directory under vector_db (default: custom_docs)"
+  echo "  RAG_ID             (optional) RAG index identifier (default: custom-org-docs)"
   echo ""
   echo "Prerequisites:"
   echo "  1. Clone https://github.com/lightspeed-core/rag-content"
@@ -65,7 +69,7 @@ mkdir -p "$OUTPUT_DIR"
 (cd "$RAG_CONTENT_REPO" && uv run python "$SCRIPT_DIR/custom_processor.py" \
   --folder "$DOCS_DIR" \
   --output "$OUTPUT_DIR" \
-  --index rhdh-ai-docs \
+  --index "$RAG_ID" \
   --vector-store-type llamastack-faiss \
   --model-dir "$EMBEDDINGS_DIR" \
   --model-name "$MODEL_NAME" \
@@ -78,7 +82,7 @@ echo "Vector DB built at: $OUTPUT_DIR"
 if [ -f "$OUTPUT_DIR/llama-stack.yaml" ]; then
   VECTOR_STORE_ID=$(grep "vector_store_id:" "$OUTPUT_DIR/llama-stack.yaml" | awk '{print $2}')
   echo "Vector store ID: $VECTOR_STORE_ID"
-  echo "Update this ID in lightspeed-stack.yaml under byok_rag.vector_db_id"
+  echo "Update this ID in lightspeed-stack.yaml under rag.byok.stores[].vector_db_id"
 fi
 
 # Build and push container image if BYOK_IMAGE is set
