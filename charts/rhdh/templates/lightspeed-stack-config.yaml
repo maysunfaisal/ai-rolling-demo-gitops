@@ -154,10 +154,10 @@ data:
         stores:
           - rag_id: custom-org-docs
             backend: faiss
-            embedding_model: nomic-ai/nomic-embed-text-v1.5
+            embedding_model: sentence-transformers/all-mpnet-base-v2
             embedding_dimension: 768
-            vector_db_id: vs_727b6321-1ff4-47bf-a76b-1cc12426c954
-            db_path: /tmp/vector_db/custom_docs/faiss_store.db
+            vector_db_id: vs_03afbf75-38e7-4807-a9f1-f84157e6a7ef
+            db_path: /rag-content/vector_db/custom_docs/faiss_store.db
             score_multiplier: 1.0
       okp:
         rhokp_url: '${env.OKP_SERVICE_URL:=http://localhost:8080}'

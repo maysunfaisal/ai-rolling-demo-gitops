@@ -819,7 +819,7 @@ backstage:
             - mountPath: /extensions
               name: extensions-catalog
         - name: byok-rag-init
-          image: quay.io/redhat-ai-dev/byok-sample:latest
+          image: quay.io/mfaisal2/rhdh-byok-ogx:20260913
           imagePullPolicy: Always
           command:
             - sh
