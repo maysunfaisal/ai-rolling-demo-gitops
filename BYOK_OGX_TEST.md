@@ -110,6 +110,67 @@ The query succeeded and returned the custom sentence as the highest-ranked resul
 
 The substantive document chunk ranked first. The frontmatter was also indexed as a separate, lower-scoring chunk.
 
+## OpenShift and Intelligent Assistant verification
+
+The test branch was deployed to the `rolling-demo-ns` namespace with
+`make install-no-rhoai` on 2026-09-13.
+
+### Lightspeed startup and vector stores
+
+- The `rolling-demo-backstage` pod reached `3/3 Running` with zero restarts.
+- The `byok-rag-init` and `lightspeed-rag-init` containers completed with exit
+  code `0`.
+- The BYOK init logs reported `BYOK staging complete` and `BYOK merge complete`.
+- Both non-empty FAISS databases were present in the Lightspeed container:
+
+  ```text
+  /rag-content/vector_db/custom_docs/faiss_store.db
+  /rag-content/vector_db/maysun-subway-test/faiss_store.db
+  ```
+
+- Lightspeed logged that it added two BYOK storage backends, two vector I/O
+  providers, two registered vector stores, and two embedding models.
+- The `/readiness` endpoint returned HTTP `200` with `ready: true` and an
+  overall status of `healthy`.
+- The `/v1/rags` endpoint listed `custom-org-docs`, `okp`, and
+  `maysun-subway-test`.
+- The `/v1/vector-stores` endpoint reported both BYOK stores with a status of
+  `completed`:
+
+  ```text
+  vs_fae456e2-95b1-47e9-8b2d-0dd5f354c0cb  custom-org-docs
+  vs_5785a2a1-6257-43de-ab08-820198985661  maysun-subway-test
+  ```
+
+### Intelligent Assistant retrieval test
+
+The following prompt was submitted through the RHDH Intelligent Assistant:
+
+> In the Maysun Subway Test Knowledge document used to test RHDH BYOK
+> retrieval, what was Maysun eating when the quick brown fox jumped over him?
+
+The assistant answered:
+
+> In the Maysun Subway Test Knowledge document, Maysun was eating Subway when
+> the quick brown fox jumped over him.
+
+The retrieval result confirms that the answer came from the custom store:
+
+- The substantive `maysun-subway-test` chunk ranked first with a score of
+  `1.613471859766606`.
+- Its text contained the complete Subway test sentence.
+- Its metadata identified `source: maysun-subway-test`, title
+  `Maysun Subway Test Knowledge`, and citation URL
+  `https://github.com/maysunfaisal`.
+- A second, lower-scoring chunk contained the document frontmatter.
+- The combined retrieval response also contained ten OKP chunks. The UI
+  displayed eleven sources, which is consistent with the two chunks from the
+  Maysun document sharing one document identity and being presented as one
+  source.
+
+This completes the local query-helper test and the end-to-end OpenShift
+Intelligent Assistant retrieval test.
+
 ## Rolling-demo BYOK issues found and corrected
 
 Three mismatches were present in the existing rolling-demo BYOK configuration:
